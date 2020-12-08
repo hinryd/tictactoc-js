@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 const index = () => {
   const [playing, setPlaying] = useState(false);
   const [gameState, setGameState] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0]);
-  const [turn, setTurn] = useState(1);
+  const [playerTurn, setPlayerTurn] = useState(1); // 1 is X, -1 is O
 
   useEffect(() => {
     const rules = [
@@ -30,30 +30,37 @@ const index = () => {
         setGameState([0, 0, 0, 0, 0, 0, 0, 0, 0]);
       }
     });
-    if (!gameState.includes(0) && playing === true) {
+
+    if (playing === true && !gameState.includes(0)) {
       alert("Tie!");
       setPlaying(false);
       setGameState([0, 0, 0, 0, 0, 0, 0, 0, 0]);
     }
-  });
+  }, [gameState]);
 
-  function Button({ state, ind }) {
-    const arr = [...gameState];
-    arr[ind] = turn;
-
+  const Button = ({ state, ind }) => {
     return (
       <button
-        className="text-xl"
+        className="border border-gray-100 text-xl h-32 w-32 rounded-xl shadow-xl"
         onClick={() => {
-          setGameState(arr);
-          setTurn(turn * -1);
+          setGameState((prevState) => {
+            let arr = [...prevState];
+            arr[ind] = playerTurn;
+            return arr;
+          });
+          setPlayerTurn(playerTurn * -1);
           setPlaying(true);
         }}
+        disabled={state === 0 ? false : true}
       >
-        {state === 0 ? "." : state === 1 ? "X" : state === -1 ? "O" : null}
+        {state === 0 ? "" : state === 1 ? "X" : state === -1 ? "O" : null}
       </button>
     );
-  }
+  };
+
+  const Grid = ({ children }) => {
+    return <div className="grid grid-cols-3 grid-rows-3 gap-2">{children}</div>;
+  };
 
   return (
     <>
@@ -61,13 +68,13 @@ const index = () => {
         <title>Tic-tac-toe!</title>
       </Head>
 
-      <main>
-        <h1>{playing}</h1>
-        <div className="grid grid-cols-3 grid-rows-3 grid-flow-col gap-2 max-w-md">
+      <main className="text-center max-w-md mx-auto py-auto">
+        <h1>We are now {playing}</h1>
+        <Grid>
           {gameState.map((block, ind) => {
             return <Button state={block} ind={ind} />;
           })}
-        </div>
+        </Grid>
       </main>
     </>
   );
