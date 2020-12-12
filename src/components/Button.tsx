@@ -8,7 +8,7 @@ const Button = ({ state, index }) => {
 
   return (
     <button
-      className="border border-gray-100 text-3xl h-32 w-32 rounded-xl shadow-xl"
+      className="border bg-gray-300 text-8xl h-36 w-full rounded-xl shadow-xl"
       onClick={() => {
         currentMove === 0
           ? setCurrentMove(1)

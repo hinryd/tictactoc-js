@@ -31,7 +31,7 @@ const Board: FC = ({ children }) => {
 
   return (
     <>
-      <div className="grid grid-cols-3 grid-rows-3 gap-2">
+      <div className="grid grid-cols-3 grid-rows-3 gap-3 justify-items-center">
         {boardState.map((buttonState, index) => {
           return <Button key={index} state={buttonState} index={index} />;
         })}
